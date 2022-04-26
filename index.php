@@ -32,19 +32,52 @@
 
 
 		//добавлений новой записи в таблицу
-		$mysql->query("INSERT INTO `users` (`name`, `bio`) VALUES('John', 'Full text')");
+		// $mysql->query("INSERT INTO `users` (`name`, `bio`) VALUES('John', 'Full text')");
 
 		//добавление нескольких записей в цикле
-		for ($i=1; $i <= 5; $i++) { 
-			$name = "Bob #" . $i;
-			$mysql->query("INSERT INTO `users` (`name`, `bio`) VALUES('$name', 'Full text')");
-		}
+		// for ($i=1; $i <= 5; $i++) { 
+		// 	$name = "Bob #" . $i;
+		// 	$mysql->query("INSERT INTO `users` (`name`, `bio`) VALUES('$name', 'Full text')");
+		// }
 
 		//обновление существующей записи в таблице
-		$mysql->query("UPDATE `users` SET `bio` = 'New text' WHERE `id` = 2");
+		// $mysql->query("UPDATE `users` SET `bio` = 'New text' WHERE `id` = 2");
 
 		//удаление записи из таблицы
-		$mysql->query("DELETE FROM `users` WHERE `id` = 5 OR `id` = 4");
+		// $mysql->query("DELETE FROM `users` WHERE `id` = 5 OR `id` = 4");
+
+
+		//получение всех записей из таблицы users
+		$result = $mysql->query("SELECT * FROM `users`");
+
+		//вывод полученных записей
+		function printResults($result)
+		{
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					echo "ID: " . $row['id'] . "<br>";
+					echo "Name: " . $row['name'] . "<br>";
+					echo "Bio: " . $row['bio'] . "<br><br>";
+				}
+			}
+			echo "<hr>";
+		}
+
+		printResults($result);
+
+		$result = $mysql->query("SELECT `id`, `name` FROM `users`");
+		printResults($result);
+
+		$result = $mysql->query("SELECT `id`, `name` FROM `users` WHERE `id` > 2");
+		printResults($result);
+
+		//сортировка в обратном порядке
+		$result = $mysql->query("SELECT `id`, `name` FROM `users` WHERE `id` > 2 ORDER BY `id` DESC");
+		printResults($result);
+
+		//вывод ограниченного количества записей
+		$result = $mysql->query("SELECT * FROM `users` LIMIT 2");
+		printResults($result);
 	}
 
 	$mysql->close();
